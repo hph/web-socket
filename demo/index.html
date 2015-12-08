@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>websocket-binding Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../paper-card/paper-card.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../websocket-binding.html">
+    <style is="custom-style">
+      paper-card {
+        display: block;
+        width: 500px;
+        margin: 0 auto;
+        font-family: Roboto;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      paper-input {
+        flex-basis: 65%;
+      }
+
+      paper-button {
+        flex-basis: 25%;
+        height: 40px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template is="dom-bind">
+      <websocket-binding id="ws"
+                         url="ws://echo.websocket.org"
+                         on-open="_onOpen"
+                         on-message="_onMessage">
+      </websocket-binding>
+      <paper-card heading="WebSocket demo">
+        <div class="card-content">
+          <pre>[[connected]]</pre>
+          <pre hidden="[[!sent]]">Sent: [[sent]]</pre>
+          <pre hidden="[[!received]]">Received: [[received]]</pre>
+          <div class="container">
+            <paper-input id="message" label="Message" autofocus></paper-input>
+            <paper-button raised on-tap="send">Send</paper-button>
+          </div>
+        </div>
+      </paper-card>
+    </template>
+    <script>
+      var scope = document.querySelector('template[is=dom-bind]');
+
+      scope.set('connected', 'Connecting...');
+      scope.set('sent', '');
+      scope.set('received', '');
+
+      scope.send = function () {
+        scope.$.ws.send(scope.$.message.value);
+        scope.set('sent', scope.$.message.value);
+      }
+
+      scope._onOpen = function () {
+        scope.set('connected', 'Connected');
+      };
+
+      scope._onMessage = function (event) {
+        scope.set('received', event.detail.data);
+      };
+    </script>
+  </body>
+</html>

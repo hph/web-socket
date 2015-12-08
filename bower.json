@@ -1,0 +1,25 @@
+{
+  "name": "websocket-binding",
+  "version": "0.0.1",
+  "authors": [
+    "Haukur Páll Hallvarðsson <hph@hph.is>"
+  ],
+  "description": "A Polymer element to ease the setup and use of a WebSocket.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "websocket"
+  ],
+  "main": "websocket-binding.html",
+  "license": "MIT",
+  "homepage": "https://github.com/hph/websocket-binding/",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "paper-input": "PolymerElements/paper-input#~1.1.2",
+    "paper-button": "PolymerElements/paper-button#~1.0.10",
+    "paper-card": "PolymerElements/paper-card#~1.0.8"
+  }
+}

@@ -1,0 +1,111 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+An element to ease the setup and use of a WebSocket binding.
+
+Example:
+
+    <websocket-binding url="ws://echo.websocket.org"
+                       on-open="_onOpen"
+                       on-close="_onClose"
+                       on-message="_onMessage"
+                       on-error="_onError">
+    </websocket-binding>
+
+@element websocket-binding
+@demo demo/index.html
+-->
+
+<dom-module id="websocket-binding">
+  <style>
+    :host {
+      display: none;
+    }
+  </style>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'websocket-binding',
+
+    properties: {
+      /**
+       * The URL to which to connect; this should be the URL to which the
+       * WebSocket server will respond.
+       */
+      url: String
+    },
+
+    attached: function () {
+      this.open();
+    },
+
+    detached: function () {
+      this.close();
+    },
+
+    /**
+     * Instantiates an instance of WebSocket, establishing connection with the
+     * remote host if url is set and sets up event handlers.
+     */
+    open: function () {
+      if (this.url && !this._websocket) {
+        this._websocket = new WebSocket(this.url);
+        this._websocket.onopen = this._onOpen.bind(this);
+        this._websocket.onclose = this._onClose.bind(this);
+        this._websocket.onmessage = this._onMessage.bind(this);
+        this._websocket.onerror = this._onError.bind(this);
+      }
+    },
+
+    /**
+     * Closes the WebSocket connection or connection attempt, if any. If the
+     * connection is already closed, this method does nothing.
+     */
+    close: function () {
+      this._websocket && this._websocket.close();
+    },
+
+    /**
+     * Transmits data to the server over the WebSocket connection.
+     * @param {String} data A text string to send to the server.
+     */
+    send: function (data) {
+      this._websocket && this._websocket.send(data);
+    },
+
+    /**
+     * Fired when the WebSocket is opened.
+     * @event open
+     */
+    _onOpen: function () {
+      this.fire('open');
+    },
+
+    /**
+     * Fired when the WebSocket is closed.
+     * @event close
+     */
+    _onClose: function () {
+      this.fire('close');
+    },
+
+    /**
+     * Fired when a message is received.
+     * @event message
+     * @param {Object} event Text string message in `event.detail`.
+     */
+    _onMessage: function (data) {
+      this.fire('message', data);
+    },
+
+    /**
+     * Fired when the WebSocket raises an error.
+     * @event error
+     * @param {Object} event Error object in `event.detail`.
+     */
+    _onError: function (error) {
+      this.fire('error', error);
+    }
+  });
+</script>
