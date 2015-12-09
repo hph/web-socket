@@ -33,7 +33,13 @@ Example:
        * The URL to which to connect; this should be the URL to which the
        * WebSocket server will respond.
        */
-      url: String
+      url: String,
+
+      /**
+       * Automatically encode sent messages to JSON and attemt to parse
+       * incoming messages into an Object from JSON.
+       */
+      json: Boolean
     },
 
     attached: function () {
@@ -71,7 +77,15 @@ Example:
      * @param {String} data A text string to send to the server.
      */
     send: function (data) {
-      this._websocket && this._websocket.send(data);
+      if (!this._websocket) {
+        return;
+      }
+
+      if (this.json && data !== null && typeof data === 'object') {
+        data = JSON.stringify(data);
+      }
+
+      this._websocket.send(data);
     },
 
     /**
@@ -95,7 +109,21 @@ Example:
      * @event message
      * @param {Object} event Text string message in `event.detail`.
      */
-    _onMessage: function (data) {
+    _onMessage: function (event) {
+      if (!this._websocket) {
+        return;
+      }
+
+      var data = event.data;
+
+      if (this.json && typeof data === 'string' || data instanceof String) {
+        try {
+          data = JSON.parse(data);
+        } catch (error) {
+          this.fire('error', error);
+        }
+      }
+
       this.fire('message', data);
     },
 
@@ -104,8 +132,8 @@ Example:
      * @event error
      * @param {Object} event Error object in `event.detail`.
      */
-    _onError: function (error) {
-      this.fire('error', error);
+    _onError: function (event) {
+      this.fire('error', event);
     }
   });
 </script>
