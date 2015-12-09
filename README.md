@@ -7,8 +7,11 @@ A Polymer element to ease the use and configuration of WebSockets.
             on-open="_onOpen"
             on-close="_onClose"
             on-message="_onMessage"
-            on-error="_onError">
+            on-error="_onError"
+            json>
 </web-socket>
 ```
 
-The full documentation and example are available [here](http://hph.github.io/web-socket/index.html).
+The above example shows how to establish a WebSocket connection with
+`<web-socket>`. The full documentation and examples are available
+[here](http://hph.github.io/web-socket/index.html).
