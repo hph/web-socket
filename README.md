@@ -4,11 +4,11 @@ A Polymer element to ease the use and configuration of WebSockets.
 
 ```html
 <web-socket url="ws://echo.websocket.org"
+            auto json
             on-open="_onOpen"
             on-close="_onClose"
             on-message="_onMessage"
-            on-error="_onError"
-            json>
+            on-error="_onError">
 </web-socket>
 ```
 

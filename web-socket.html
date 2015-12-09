@@ -6,11 +6,11 @@ A Polymer element to ease the use and configuration of WebSockets.
 Example:
 
     <web-socket url="ws://echo.websocket.org"
+                auto json
                 on-open="_onOpen"
                 on-close="_onClose"
                 on-message="_onMessage"
-                on-error="_onError"
-                json>
+                on-error="_onError">
     </web-socket>
 
 @element web-socket
@@ -48,11 +48,18 @@ Example:
        * Automatically encode sent messages to JSON and attemt to parse
        * incoming messages into an Object from JSON.
        */
-      json: Boolean
+      json: Boolean,
+
+      /**
+       * Automatically open WebSocket on attach.
+       */
+      auto: Boolean
     },
 
     attached: function () {
-      this.open();
+      if (this.auto) {
+        this.open();
+      }
     },
 
     detached: function () {
