@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>websocket-binding Demo</title>
+    <title>web-socket Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../paper-card/paper-card.html">
     <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../../paper-button/paper-button.html">
-    <link rel="import" href="../websocket-binding.html">
+    <link rel="import" href="../web-socket.html">
     <style is="custom-style">
       paper-card {
         display: block;
@@ -35,12 +35,12 @@
   </head>
   <body unresolved>
     <template is="dom-bind">
-      <websocket-binding id="ws"
-                         url="ws://echo.websocket.org"
-                         on-open="_onOpen"
-                         on-message="_onMessage">
-      </websocket-binding>
-      <paper-card heading="WebSocket demo">
+      <web-socket id="ws"
+                  url="ws://echo.websocket.org"
+                  on-open="_onOpen"
+                  on-message="_onMessage">
+      </web-socket>
+      <paper-card heading="web-socket demo">
         <div class="card-content">
           <pre>[[connected]]</pre>
           <pre hidden="[[!sent]]">Sent: [[sent]]</pre>

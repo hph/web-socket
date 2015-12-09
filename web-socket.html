@@ -1,22 +1,22 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-An element to ease the setup and use of a WebSocket binding.
+A Polymer element to ease the use and configuration of WebSockets.
 
 Example:
 
-    <websocket-binding url="ws://echo.websocket.org"
-                       on-open="_onOpen"
-                       on-close="_onClose"
-                       on-message="_onMessage"
-                       on-error="_onError">
-    </websocket-binding>
+    <web-socket url="ws://echo.websocket.org"
+                on-open="_onOpen"
+                on-close="_onClose"
+                on-message="_onMessage"
+                on-error="_onError">
+    </web-socket>
 
-@element websocket-binding
+@element web-socket
 @demo demo/index.html
 -->
 
-<dom-module id="websocket-binding">
+<dom-module id="web-socket">
   <style>
     :host {
       display: none;
@@ -26,7 +26,7 @@ Example:
 
 <script>
   Polymer({
-    is: 'websocket-binding',
+    is: 'web-socket',
 
     properties: {
       /**

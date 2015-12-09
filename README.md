@@ -1,16 +1,14 @@
-# websocket-binding
+# web-socket
 
-A Polymer element to ease the setup and use of a WebSocket.
-
-Example:
+A Polymer element to ease the use and configuration of WebSockets.
 
 ```html
-<websocket-binding url="ws://echo.websocket.org"
-                   on-open="_onOpen"
-                   on-close="_onClose"
-                   on-message="_onMessage"
-                   on-error="_onError">
-</websocket-binding>
+<web-socket url="ws://echo.websocket.org"
+            on-open="_onOpen"
+            on-close="_onClose"
+            on-message="_onMessage"
+            on-error="_onError">
+</web-socket>
 ```
 
-Released under the [MIT License](https://opensource.org/licenses/MIT).
+The full documentation and example are available [here](http://hph.github.io/web-socket/index.html).
