@@ -37,6 +37,14 @@ Example:
       url: String,
 
       /**
+       * An array of protocol strings.
+       */
+      protocols: {
+        type: Array,
+        value: []
+      },
+
+      /**
        * Automatically encode sent messages to JSON and attemt to parse
        * incoming messages into an Object from JSON.
        */
@@ -57,7 +65,7 @@ Example:
      */
     open: function () {
       if (this.url && !this._websocket) {
-        this._websocket = new WebSocket(this.url);
+        this._websocket = new WebSocket(this.url, this.protocols);
         this._websocket.onopen = this._onOpen.bind(this);
         this._websocket.onclose = this._onClose.bind(this);
         this._websocket.onmessage = this._onMessage.bind(this);
