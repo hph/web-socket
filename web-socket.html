@@ -77,16 +77,19 @@ Example:
 
     /**
      * Instantiates an instance of WebSocket, establishing connection with the
-     * remote host if url is set and sets up event handlers.
+     * remote host if url is set and sets up event handlers. Replaces existing
+     * instance, if present.
      */
     open: function () {
-      if (this.url && !this._websocket) {
-        this._websocket = new WebSocket(this.url, this.protocols);
-        this._websocket.onopen = this._onOpen.bind(this);
-        this._websocket.onclose = this._onClose.bind(this);
-        this._websocket.onmessage = this._onMessage.bind(this);
-        this._websocket.onerror = this._onError.bind(this);
+      if (!this.url) {
+        throw Error('url property is required');
       }
+
+      this._websocket = new WebSocket(this.url, this.protocols);
+      this._websocket.onopen = this._onOpen.bind(this);
+      this._websocket.onclose = this._onClose.bind(this);
+      this._websocket.onmessage = this._onMessage.bind(this);
+      this._websocket.onerror = this._onError.bind(this);
     },
 
     /**
