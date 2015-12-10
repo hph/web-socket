@@ -31,6 +31,21 @@
         height: 40px;
         margin-top: 20px;
       }
+
+      div[status] {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 12px;
+      }
+
+      div[status=connected] {
+        color: green;
+      }
+
+      div[status=disconnected] {
+        color: red;
+      }
     </style>
   </head>
   <body unresolved>
@@ -42,10 +57,12 @@
                   on-message="_onMessage">
       </web-socket>
       <paper-card heading="web-socket demo">
+        <div status$="[[status]]">[[status]]</div>
         <div class="card-content">
-          <pre>[[connected]]</pre>
-          <pre hidden="[[!sent]]">Sent: [[sent]]</pre>
-          <pre hidden="[[!received]]">Received: [[received]]</pre>
+          <p>This WebSocket server echoes back everything you throw at it.</p>
+          <template is="dom-repeat" items="[[messages]]">
+            <pre>[[item.author]]: [[item.text]]</pre>
+          </template>
           <div class="container">
             <paper-input id="message" label="Message" autofocus></paper-input>
             <paper-button raised on-tap="send">Send</paper-button>
@@ -55,22 +72,22 @@
     </template>
     <script>
       var scope = document.querySelector('template[is=dom-bind]');
-
-      scope.set('connected', 'Connecting...');
-      scope.set('sent', '');
-      scope.set('received', '');
+      scope.set('messages', []);
+      scope.set('status', 'disconnected');
 
       scope.send = function () {
         scope.$.ws.send(scope.$.message.value);
-        scope.set('sent', scope.$.message.value);
+        scope.push('messages', { author: 'you', text: scope.$.message.value});
+        scope.$.message.value = '';
+        scope.$.message.focus();
       }
 
       scope._onOpen = function () {
-        scope.set('connected', 'Connected');
+        scope.set('status', 'connected');
       };
 
       scope._onMessage = function (event) {
-        scope.set('received', event.detail);
+        scope.push('messages', { author: 'server', text: event.detail });
       };
     </script>
   </body>
