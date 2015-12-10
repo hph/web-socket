@@ -51,12 +51,18 @@ Example:
        * Automatically encode sent messages to JSON and attemt to parse
        * incoming messages into an Object from JSON.
        */
-      json: Boolean,
+      json: {
+        type: Boolean,
+        value: false
+      },
 
       /**
-       * Automatically open WebSocket on attach or on `url` change.
+       * Automatically open WebSocket on `attach` or on `url` change.
        */
-      auto: Boolean
+      auto: {
+        type: Boolean,
+        value: false
+      }
     },
 
     attached: function () {
@@ -88,8 +94,10 @@ Example:
      * connection is already closed, this method does nothing.
      */
     close: function () {
-      this._websocket && this._websocket.close();
-      this._websocket = null;
+      if (this._websocket) {
+        this._websocket.close();
+        this._websocket = null;
+      }
     },
 
     /**
@@ -156,6 +164,9 @@ Example:
       this.fire('error', event);
     },
 
+    /**
+     * Fired when the value of the `url` property changes.
+     */
     _urlChanged: function (url) {
       if (this.auto) {
         this.close();
