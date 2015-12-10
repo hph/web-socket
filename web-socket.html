@@ -34,7 +34,10 @@ Example:
        * The URL to which to connect; this should be the URL to which the
        * WebSocket server will respond.
        */
-      url: String,
+      url: {
+        type: String,
+        observer: '_urlChanged'
+      },
 
       /**
        * An array of protocol strings.
@@ -51,7 +54,7 @@ Example:
       json: Boolean,
 
       /**
-       * Automatically open WebSocket on attach.
+       * Automatically open WebSocket on attach or on `url` change.
        */
       auto: Boolean
     },
@@ -86,6 +89,7 @@ Example:
      */
     close: function () {
       this._websocket && this._websocket.close();
+      this._websocket = null;
     },
 
     /**
@@ -150,6 +154,13 @@ Example:
      */
     _onError: function (event) {
       this.fire('error', event);
+    },
+
+    _urlChanged: function (url) {
+      if (this.auto) {
+        this.close();
+        this.open();
+      }
     }
   });
 </script>
