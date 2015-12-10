@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../web-socket.html">
+  </head>
+  <body>
+    <web-socket url="ws://echo.websocket.org"></web-socket>
+    <script>
+      var ws = document.querySelector('web-socket');
+
+      suite('<web-socket>', function () {
+        test('has the url property', function () {
+          assert.equal(ws.url, 'ws://echo.websocket.org');
+        });
+
+        test('WebSocket instance is not set until opened', function () {
+          assert.equal(ws._websocket, undefined);
+        });
+
+        test('#open() opens a connection', function (done) {
+          ws.open();
+          ws.addEventListener('open', function () {
+            assert.equal(ws._websocket.readyState, 1);
+            done();
+          });
+        });
+
+        test('#close() closes the connection', function (done) {
+          ws.close();
+          ws.addEventListener('close', function () {
+            assert.equal(ws._websocket, null);
+            ws.url = '';
+            done();
+          });
+        });
+
+        test('automatically connects on url change with auto', function (done) {
+          ws.auto = true;
+          ws.url = 'ws://echo.websocket.org';
+          ws.addEventListener('open', function () {
+            assert.equal(ws._websocket.readyState, 1);
+            done();
+          });
+        });
+
+        test('#send sends a message', function (done) {
+          ws.send('message');
+          ws.addEventListener('message', function (event) {
+            // The server used echoes everything back, assume message was sent.
+            assert.equal(event.detail, 'message');
+            event.target.removeEventListener(event.type, arguments.callee);
+            done();
+          });
+        });
+
+        test('automatically encodes and decodes JSON', function (done) {
+          ws.json = true;
+          var message = { hello: 'world' };
+          ws.send(message);
+          ws.addEventListener('message', function (event) {
+            assert.equal(event.detail.hello, 'world');
+            done();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
