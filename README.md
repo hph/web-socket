@@ -1,4 +1,4 @@
-# web-socket
+# web-socket [![Build Status](https://travis-ci.org/hph/web-socket.svg?branch=master)](https://travis-ci.org/hph/web-socket)
 
 A [Polymer](https://www.polymer-project.org/1.0/) element to ease the use and
 configuration of
