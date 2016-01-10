@@ -15,7 +15,17 @@ configuration of
 ```
 
 The above example shows how to establish a WebSocket connection with
-`<web-socket>`.
+`<web-socket>` in a [Polymer](https://www.polymer-project.org) app. This simple
+declarative element definition is:
+
+- Establishing a connection to `ws://echo.websocket.org`.
+- Automatically connecting on page load and reconnecting on `url` change.
+- Parsing and stringifying JSON automatically.
+- Automatically reconnecting in the event of an unclean close event (a default
+  behaviour of this library - no configuration required through properties).
+- Setting up event handlers to functions declared externally (`_onOpen`,
+  `_onClose`, etc - defined by a parent element, such as a page).
+
 ### Install
 
 You can install `<web-socket>` with Bower

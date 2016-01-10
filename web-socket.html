@@ -13,6 +13,18 @@ Example:
                 on-error="_onError">
     </web-socket>
 
+The above example shows how to establish a WebSocket connection with
+`<web-socket>` in a [Polymer](https://www.polymer-project.org) app. This simple
+declarative element definition is:
+
+- Establishing a connection to `ws://echo.websocket.org`.
+- Automatically connecting on page load and reconnecting on `url` change.
+- Parsing and stringifying JSON automatically.
+- Automatically reconnecting in the event of an unclean close event (a default
+  behaviour of this library - no configuration required through properties).
+- Setting up event handlers to functions declared externally (`_onOpen`,
+  `_onClose`, etc - defined by a parent element, such as a page).
+
 @element web-socket
 @demo demo/index.html
 -->
@@ -54,6 +66,15 @@ Example:
       auto: {
         type: Boolean,
         value: false
+      },
+
+      /**
+       * Initial delay before attempting to reopen the connection in the event
+       * that it was not closed cleanly. The interval will decay exponentially.
+       */
+      _reopenInterval: {
+        type: Number,
+        value: 100
       }
     },
 
@@ -116,14 +137,24 @@ Example:
      * @event open
      */
     _onOpen: function () {
+      // Reset reopen interval and remove any pending callbacks.
+      this._reopenInterval = this._config._reopenInterval;
+      this.cancelAsync(this._reopenAttempt);
+
       this.fire('open');
     },
 
     /**
      * Fired when the WebSocket is closed.
      * @event close
+     * @param {Object} event A CloseEvent event object.
      */
-    _onClose: function () {
+    _onClose: function (event) {
+      if (!event.wasClean) {
+        this._reopenAttempt = this.async(this.open, this._reopenInterval);
+        this._reopenInterval *= 2;
+      }
+
       this.fire('close');
     },
 
