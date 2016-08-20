@@ -18,7 +18,7 @@ The above example shows how to establish a WebSocket connection with
 declarative element definition is:
 
 - Establishing a connection to `ws://echo.websocket.org`.
-- Automatically connecting on page load and reconnecting on `url` change.
+- Automatically connecting on page load.
 - Parsing and stringifying JSON automatically.
 - Automatically reconnecting in the event of an unclean close event (a default
   behaviour of this library - no configuration required through properties).
@@ -61,7 +61,7 @@ declarative element definition is:
       },
 
       /**
-       * Automatically open WebSocket on `attach` or on `url` change.
+       * Automatically open WebSocket on `attach`.
        */
       auto: {
         type: Boolean,
@@ -192,12 +192,15 @@ declarative element definition is:
 
     /**
      * Fired when the value of the `url` property changes.
+     * @event url-changed
+     * @param {String} currentUrl The current URL.
+     * @param {String} previousUrl The previous URL.
      */
-    _urlChanged: function (url) {
-      if (this.auto) {
-        this.close();
-        this.open();
-      }
+    _urlChanged: function (currentUrl, previousUrl) {
+      this.fire('url-changed', {
+        currentUrl: currentUrl,
+        previousUrl: previousUrl
+      });
     }
   });
 </script>

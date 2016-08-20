@@ -19,7 +19,7 @@ The above example shows how to establish a WebSocket connection with
 declarative element definition is:
 
 - Establishing a connection to `ws://echo.websocket.org`.
-- Automatically connecting on page load and reconnecting on `url` change.
+- Automatically connecting on page load.
 - Parsing and stringifying JSON automatically.
 - Automatically reconnecting in the event of an unclean close event (a default
   behaviour of this library - no configuration required through properties).
