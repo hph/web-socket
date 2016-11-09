@@ -74,8 +74,15 @@ declarative element definition is:
        */
       _reopenInterval: {
         type: Number,
-        value: 100
-      }
+        value: 1000
+      },
+      /**
+       * Flag to decay the reconnect timer.
+       */ 
+      decay: {
+           type: Boolean,
+           value: false
+	}	
     },
 
     attached: function () {
@@ -152,7 +159,9 @@ declarative element definition is:
     _onClose: function (event) {
       if (!event.wasClean) {
         this._reopenAttempt = this.async(this.open, this._reopenInterval);
-        this._reopenInterval *= 2;
+        if (this.decay) {
+          this._reopenInterval *= 2;
+        }
       }
 
       this.fire('close');
