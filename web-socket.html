@@ -86,6 +86,12 @@ declarative element definition is:
       }
     },
 
+    ready: function() {
+      this._config = {
+        _reopenInterval: this._reopenInterval
+      };
+    },
+
     attached: function () {
       if (this.auto) {
         this.open();
